@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "iwf-nodemcu-1-app"
+		},
+		{
+			"path": "iwf-nodemcu-1-firmware"
+		}
+	],
+	"settings": {}
+}
