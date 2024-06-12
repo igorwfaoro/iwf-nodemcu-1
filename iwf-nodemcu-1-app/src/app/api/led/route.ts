@@ -43,7 +43,7 @@ export const GET = (req: Request) => {
       items.push(`${key}=${valueToSet}`);
     });
 
-    return items.join(';');
+    return new Response(items.join(';'));
   }
 
   return NextResponse.json(data);
