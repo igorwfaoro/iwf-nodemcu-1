@@ -24,7 +24,24 @@ export const PATCH = (req: Request) => {
   return NextResponse.json({ isOn });
 };
 
-export const GET = () => {
+export const GET = (req: Request) => {
+  const { searchParams } = new URL(req.url);
+
   const data = getData();
+
+  const returnRawParamValue = searchParams.get('raw');
+  const returnRaw =
+    returnRawParamValue === 'true' || returnRawParamValue === '1';
+
+  if (returnRaw) {
+    const items: string[] = [];
+
+    Object.entries(data).forEach(([key, value]) =>
+      items.push(`${key}=${value}`)
+    );
+
+    return items.join(';');
+  }
+
   return NextResponse.json(data);
 };
