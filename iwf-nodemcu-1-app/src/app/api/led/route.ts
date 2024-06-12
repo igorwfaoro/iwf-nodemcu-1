@@ -36,9 +36,12 @@ export const GET = (req: Request) => {
   if (returnRaw) {
     const items: string[] = [];
 
-    Object.entries(data).forEach(([key, value]) =>
-      items.push(`${key}=${value}`)
-    );
+    Object.entries(data).forEach(([key, value]) => {
+      const valueToSet =
+        typeof value === 'boolean' ? (value ? '1' : '0') : value;
+
+      items.push(`${key}=${valueToSet}`);
+    });
 
     return items.join(';');
   }
