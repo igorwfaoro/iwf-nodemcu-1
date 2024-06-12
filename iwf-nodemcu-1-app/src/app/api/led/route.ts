@@ -1,17 +1,34 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
+import path from 'path';
 
 interface Data {
   isOn: boolean;
 }
 
-const dataFilePath = `${process.cwd()}/data/led.json`;
+const dataFilePath = `/tmp/iwf-nodemcu-1/led.json`;
 
-const saveData = (data: Data) =>
+const ensureDirectoryExistence = (filePath: string) => {
+  const dirname = path.dirname(filePath);
+  if (!fs.existsSync(dirname)) {
+    fs.mkdirSync(dirname, { recursive: true });
+  }
+};
+
+const saveData = (data: Data) => {
+  ensureDirectoryExistence(dataFilePath);
   fs.writeFileSync(dataFilePath, JSON.stringify(data), { encoding: 'utf-8' });
+};
 
-const getData = (): Data =>
-  JSON.parse(fs.readFileSync(dataFilePath, { encoding: 'utf-8' }));
+const getData = (): Data => {
+  if (!fs.existsSync(dataFilePath)) {
+    ensureDirectoryExistence(dataFilePath);
+    const defaultData: Data = { isOn: false };
+    saveData(defaultData);
+    return defaultData;
+  }
+  return JSON.parse(fs.readFileSync(dataFilePath, { encoding: 'utf-8' }));
+};
 
 export const PATCH = (req: Request) => {
   const { searchParams } = new URL(req.url);

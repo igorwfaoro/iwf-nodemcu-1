@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:lan": "next dev -H $(ip addr show wlo1 | grep \"inet \" | awk '{print $2}' | cut -d/ -f1) -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
