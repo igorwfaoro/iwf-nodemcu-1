@@ -30,11 +30,10 @@ const getData = (): Data => {
   return JSON.parse(fs.readFileSync(dataFilePath, { encoding: 'utf-8' }));
 };
 
-export const PATCH = (req: Request) => {
-  const { searchParams } = new URL(req.url);
+export const PATCH = async (req: Request) => {
+  const data: Data = await req.json();
 
-  const isOnParamValue = searchParams.get('isOn');
-  const isOn = isOnParamValue === 'true' || isOnParamValue === '1';
+  const isOn = data.isOn === true;
 
   saveData({ isOn });
 

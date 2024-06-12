@@ -25,7 +25,7 @@ export default function IndexPage() {
   };
 
   const setLedData = (isOn: boolean) =>
-    fetch(`/api/led?isOn=${isOn ? '1' : '0'}`, { method: 'PATCH' })
+    fetch('/api/led', { method: 'PATCH', body: JSON.stringify({ isOn }) })
       .then((response) => response.json())
       .then((data: Data) => data.isOn)
       .then(setLedIsOn);
