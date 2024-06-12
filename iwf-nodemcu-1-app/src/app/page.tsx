@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-interface IndexPageProps {}
+interface Data {
+  isOn: boolean;
+}
 
-export default function IndexPage({}: IndexPageProps) {
+export default function IndexPage() {
   const [ledIsOn, setLedIsOn] = useState(false);
 
   useEffect(() => {
@@ -18,17 +20,15 @@ export default function IndexPage({}: IndexPageProps) {
   const getLedData = () => {
     fetch('/api/led')
       .then((response) => response.json())
-      .then((data: { isOn: boolean }) => {
-        if (ledIsOn !== data.isOn) setLedIsOn(data.isOn);
-      });
+      .then((data: Data) => data.isOn)
+      .then(setLedIsOn);
   };
 
   const setLedData = (isOn: boolean) =>
     fetch(`/api/led?isOn=${isOn ? '1' : '0'}`, { method: 'PATCH' })
       .then((response) => response.json())
-      .then((data: { isOn: boolean }) => {
-        if (ledIsOn !== data.isOn) setLedIsOn(data.isOn);
-      });
+      .then((data: Data) => data.isOn)
+      .then(setLedIsOn);
 
   return (
     <main className="p-6 space-y-6 w-full h-screen flex flex-col justify-center items-center">
